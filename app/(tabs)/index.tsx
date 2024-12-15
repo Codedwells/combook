@@ -51,7 +51,7 @@ export default function TabOneScreen() {
             </Pressable>
           </View>
 
-          <ScrollView className='h-[380px]'>
+          <ScrollView className='h-[370px]'>
             {dummyNotes.map((note, index) => (
               <View
                 key={index}
