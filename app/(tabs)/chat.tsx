@@ -9,13 +9,15 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { MaterialIcons } from '@expo/vector-icons'
 import { dummyChatMessages } from '@/constants/data'
+import Navigation, { TopNav } from '@/components/layout/navigation'
 
 export default function ChatScreen() {
   const [message, setMessage] = useState('')
 
   return (
     <SafeAreaView className='flex-1 bg-gray-100'>
-      <ScrollView className='flex-1 p-4'>
+    <TopNav/>
+      <ScrollView className='p-4'>
         {dummyChatMessages.map((msg, index) => (
           <View
             key={index}
@@ -42,6 +44,8 @@ export default function ChatScreen() {
           <MaterialIcons name='send' size={24} color='white' />
         </TouchableOpacity>
       </View>
+
+      <Navigation className='m-4'/>
     </SafeAreaView>
   )
 }

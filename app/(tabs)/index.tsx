@@ -1,4 +1,4 @@
-import { Link, useRouter } from 'expo-router'
+import { useRouter } from 'expo-router'
 import { Text, View } from '@/components/Themed'
 import {
   FlatList,
@@ -12,17 +12,11 @@ import Ionicons from '@expo/vector-icons/Ionicons'
 import MaterialIcons from '@expo/vector-icons/MaterialIcons'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { dummyNotes } from '@/constants/data'
-import { handleUrlParams } from 'expo-router/build/fork/getStateFromPath-forks'
+import Navigation, { TopNav } from '@/components/layout/navigation'
 
 type availableRoutes = 'chat' | 'calendar' | 'notes'
 
 export default function TabOneScreen() {
-  const menuItems = [
-    { title: 'Notes', icon: '📝', route: 'notes' },
-    { title: 'AI Chat', icon: '🤖', route: 'chat' },
-    { title: 'Calendar', icon: '📅', route: 'calendar' },
-  ]
-
   const router = useRouter()
 
   const handlePress = (route: availableRoutes) => {
@@ -32,17 +26,9 @@ export default function TabOneScreen() {
   return (
     <SafeAreaView className='flex-1'>
       <View className='flex-1 flex flex-col h-full bg-gray-200 p-4'>
-        <View className='flex flex-row items-center justify-between'>
-          <Text className='text-lg font-JakartaSemiBold text-center px-2 text-[#6E5036]'>
-            Ask your question
-          </Text>
+        <TopNav />
 
-          <Pressable className='bg-slate-100 p-1.5 rounded-full border border-gray-300'>
-            <Ionicons name='notifications-outline' size={24} color='black' />
-          </Pressable>
-        </View>
-
-        <View className='flex flex-row items-center bg-slate-200 border border-slate-400 py-3 px-6 rounded-full gap-2 mt-12'>
+        <View className='flex flex-row items-center bg-slate-200 border border-slate-400 py-3 px-6 rounded-full gap-2 mt-8'>
           <Ionicons name='search' size={24} color='black' />
           <TextInput className='flex-1' placeholder='Search' />
           <Pressable className='border rounded-full border-slate-400 p-0.5'>
@@ -58,7 +44,7 @@ export default function TabOneScreen() {
               Notes
             </Text>
 
-            <Pressable onPress={()=>handlePress("notes")}>
+            <Pressable onPress={() => handlePress('notes')}>
               <Text className='text-sm text-gray-500 font-Jakarta'>
                 See all
               </Text>
@@ -66,41 +52,26 @@ export default function TabOneScreen() {
           </View>
 
           <ScrollView className='h-[380px]'>
-          {dummyNotes.map((note, index) => (
-            <View
-              key={index}
-              className='border bg-[#8B501F] border-primary/50 rounded-lg p-4 mb-4 shadow-sm'
-            >
-              <Text className='text-lg font-semibold mb-2'>{note.title}</Text>
-              <Text className='text-gray-600 mb-3'>{note.summary}</Text>
-              <View className='flex-row justify-between items-center'>
-                <Text className='text-xs text-gray-400'>{note.date}</Text>
-                <TouchableOpacity className='flex-row items-center'>
-                  <MaterialIcons name='share' size={20} color='#4A90E2' />
-                  <Text className='text-blue-500 ml-1'>Share</Text>
-                </TouchableOpacity>
+            {dummyNotes.map((note, index) => (
+              <View
+                key={index}
+                className='border bg-[#8B501F] border-primary/50 rounded-lg p-4 mb-4 shadow-sm'
+              >
+                <Text className='text-lg font-semibold mb-2'>{note.title}</Text>
+                <Text className='text-gray-600 mb-3'>{note.summary}</Text>
+                <View className='flex-row justify-between items-center'>
+                  <Text className='text-xs text-gray-400'>{note.date}</Text>
+                  <TouchableOpacity className='flex-row items-center'>
+                    <MaterialIcons name='share' size={20} color='#4A90E2' />
+                    <Text className='text-blue-500 ml-1'>Share</Text>
+                  </TouchableOpacity>
+                </View>
               </View>
-            </View>
-          ))}
+            ))}
           </ScrollView>
         </View>
 
-        <View className='flex flex-row gap-4 mt-auto justify-center'>
-          {menuItems.map((item) => (
-            <Pressable
-              key={item.route}
-              onPress={() => handlePress(item.route as availableRoutes)}
-              className='w-20 h-20 bg-white border-2 border-primary shadow-md'
-            >
-              <View className='items-center justify-center h-full'>
-                <Text className='text-3xl mb-2'>{item.icon}</Text>
-                <Text className='text-sm font-JakartaSemiBold text-gray-800'>
-                  {item.title}
-                </Text>
-              </View>
-            </Pressable>
-          ))}
-        </View>
+        <Navigation />
       </View>
     </SafeAreaView>
   )

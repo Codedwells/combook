@@ -12,6 +12,7 @@ import {
   Button,
   StyleSheet,
 } from 'react-native'
+import Navigation, { TopNav } from '@/components/layout/navigation'
 
 export default function CalendarScreen() {
   useEffect(() => {
@@ -27,10 +28,10 @@ export default function CalendarScreen() {
     })()
   }, [])
   return (
-    <SafeAreaView className='flex-1 bg-gray-100'>
-      <Button title='Create a new calendar' onPress={createCalendar} />
+    <SafeAreaView className='flex-1 p-4 bg-gray-100'>
+      <TopNav />
 
-      <ScrollView className='flex-1 p-4'>
+      <ScrollView className='flex-1'>
         {dummyEvents.map((event, index) => (
           <View key={index} className='bg-white rounded-lg p-4 mb-4 shadow-sm'>
             <View className='flex-row justify-between items-center mb-2'>
@@ -49,6 +50,8 @@ export default function CalendarScreen() {
           Add New Event
         </Text>
       </TouchableOpacity>
+
+      <Navigation />
     </SafeAreaView>
   )
 }
