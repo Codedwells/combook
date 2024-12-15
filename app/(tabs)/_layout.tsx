@@ -1,5 +1,5 @@
 import React from 'react'
-import { Tabs } from 'expo-router'
+import { Stack } from 'expo-router'
 import Colors from '@/constants/Colors'
 import { AntDesign } from '@expo/vector-icons'
 import { useColorScheme } from '@/components/useColorScheme'
@@ -9,50 +9,39 @@ export default function TabLayout() {
   const colorScheme = useColorScheme()
 
   return (
-    <Tabs
+    <Stack
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        // Disable the static render of the header on web
-        // to prevent a hydration error in React Navigation v6.
         headerShown: useClientOnlyValue(false, false),
       }}
     >
-      <Tabs.Screen
+      <Stack.Screen
         name='index'
         options={{
           title: 'Home',
-          tabBarIcon: ({ color }) => (
-            <AntDesign name='home' size={24} color={color} />
-          ),
+          headerShown: false,
         }}
       />
-      <Tabs.Screen
+      <Stack.Screen
         name='chat'
         options={{
           title: 'Chats',
-          tabBarIcon: ({ color }) => (
-            <AntDesign name='message1' size={24} color={color} />
-          ),
+          headerShown: false,
         }}
       />
-      <Tabs.Screen
+      <Stack.Screen
         name='calendar'
         options={{
           title: 'Calendar',
-          tabBarIcon: ({ color }) => (
-            <AntDesign name='calendar' size={24} color={color} />
-          ),
+          headerShown: false,
         }}
       />
-      <Tabs.Screen
+      <Stack.Screen
         name='notes'
         options={{
           title: 'Notes',
-          tabBarIcon: ({ color }) => (
-            <AntDesign name='book' size={24} color={color} />
-          ),
+          headerShown: false,
         }}
       />
-    </Tabs>
+    </Stack>
   )
 }
