@@ -77,11 +77,11 @@ export default function TabOneScreen() {
   )
 }
 const categories = [
-  { id: '1', name: 'Physics', image: 'https://via.placeholder.com/100' },
-  { id: '2', name: 'Chemistry', image: 'https://via.placeholder.com/100' },
-  { id: '3', name: 'Calclus', image: 'https://via.placeholder.com/100' },
-  { id: '4', name: 'Programming', image: 'https://via.placeholder.com/100' },
-  { id: '5', name: 'Algebra', image: 'https://via.placeholder.com/100' },
+  { id: '1', name: 'Physics', image: 'https://img.icons8.com/clouds/100/physics.png' },
+  { id: '2', name: 'Calclus', image: 'https://img.icons8.com/pulsar-gradient/100/cosine.png' },
+  { id: '3', name: 'Chemistry', image: 'https://img.icons8.com/clouds/100/test-tube.png' },
+  { id: '4', name: 'Algebra', image: 'https://img.icons8.com/pulsar-gradient/100/square-root.png' },
+  { id: '5', name: 'Programming', image: 'https://img.icons8.com/pulsar-gradient/100/goto.png' },
 ]
 
 type CategoryType = {
@@ -106,11 +106,8 @@ const CategoryList = () => {
         <Text className='text-lg font-JakartaSemiBold text-gray-800'>
           Categories
         </Text>
-
-        <Pressable>
-          <Text className='text-sm text-gray-500 font-Jakarta'>See all</Text>
-        </Pressable>
       </View>
+
       <FlatList
         data={categories}
         renderItem={renderItem}

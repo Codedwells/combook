@@ -51,9 +51,9 @@ export function TopNav({ className }: TopNavProps) {
   return (
     <View className={cn('flex flex-col p-4', className)}>
       <View className='flex flex-row items-center justify-between'>
-        <Text className='text-lg font-JakartaSemiBold text-center px-2 text-[#6E5036]'>
-          Ask your question
-        </Text>
+          <Text className='text-2xl font-JakartaBold text-[#6E5036]'>
+            Studeey
+          </Text>
 
         <Pressable className='bg-slate-100 p-1.5 rounded-full border border-gray-300'>
           <Ionicons name='notifications-outline' size={24} color='black' />
