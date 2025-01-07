@@ -1,12 +1,8 @@
 import React from 'react'
 import { Stack } from 'expo-router'
-import Colors from '@/constants/Colors'
-import { AntDesign } from '@expo/vector-icons'
-import { useColorScheme } from '@/components/useColorScheme'
 import { useClientOnlyValue } from '@/components/useClientOnlyValue'
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme()
 
   return (
     <Stack

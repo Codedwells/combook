@@ -116,3 +116,8 @@ export function getUserIconData(name: string): {
     color: randomColor,
   }
 }
+
+// Generate random ID
+export function generateRandomId() {
+  return Math.random().toString(36).substr(2, 9)
+}
