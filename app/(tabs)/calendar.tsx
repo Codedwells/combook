@@ -13,6 +13,7 @@ import {
 } from 'react-native'
 import Navigation, { TopNav } from '@/components/layout/navigation'
 import { generateRandomId } from '@/lib/utils'
+import { useAppStore } from '@/store/store'
 
 type EventType = {
   title: string
@@ -23,7 +24,7 @@ type EventType = {
 }
 
 export default function CalendarScreen() {
-  const [events, setEvents] = useState<EventType[]>([])
+  const { events, addEvent, updateEvent, deleteEvent } = useAppStore()
   const [modalVisible, setModalVisible] = useState(false)
   const [editMode, setEditMode] = useState(false)
   const [newEvent, setNewEvent] = useState<EventType>({
@@ -47,10 +48,10 @@ export default function CalendarScreen() {
 
   const handleAddEvent = () => {
     if (editMode) {
-      setEvents(events.map(event => event.id === newEvent.id ? newEvent : event))
+      updateEvent(newEvent)
       setEditMode(false)
     } else {
-      setEvents([...events, newEvent])
+      addEvent(newEvent)
     }
     setModalVisible(false)
     setNewEvent({ title: '', date: '', time: '', location: '', id: generateRandomId() })
@@ -60,10 +61,6 @@ export default function CalendarScreen() {
     setNewEvent(event)
     setEditMode(true)
     setModalVisible(true)
-  }
-
-  const handleDeleteEvent = (id: string) => {
-    setEvents(events.filter(event => event.id !== id))
   }
 
   return (
@@ -81,7 +78,7 @@ export default function CalendarScreen() {
             <Text className='text-gray-400'>{event.location}</Text>
             <View className='flex-row justify-end gap-2'>
               <Button title='Edit' onPress={() => handleEditEvent(event)} />
-              <Button title='Delete' onPress={() => handleDeleteEvent(event.id)} />
+              <Button title='Delete' onPress={() => deleteEvent(event.id)} />
             </View>
           </View>
         ))}
@@ -131,8 +128,8 @@ export default function CalendarScreen() {
               className='border-b border-gray-300 mb-4 p-2'
             />
             <View className='flex gap-2 items-center'>
-            <Button title={editMode ? 'Save Changes' : 'Add Event'} onPress={handleAddEvent} />
-            <Button title='Cancel' onPress={() => setModalVisible(false)} />
+              <Button title={editMode ? 'Save Changes' : 'Add Event'} onPress={handleAddEvent} />
+              <Button title='Cancel' onPress={() => setModalVisible(false)} />
             </View>
           </View>
         </View>

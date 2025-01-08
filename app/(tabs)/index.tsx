@@ -11,17 +11,24 @@ import {
 import Ionicons from '@expo/vector-icons/Ionicons'
 import MaterialIcons from '@expo/vector-icons/MaterialIcons'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { dummyNotes } from '@/constants/data'
 import Navigation, { TopNav } from '@/components/layout/navigation'
+import { useAppStore } from '@/store/store'
+import { useState } from 'react'
 
 type availableRoutes = 'chat' | 'calendar' | 'notes'
 
 export default function TabOneScreen() {
   const router = useRouter()
+  const { notes } = useAppStore()
+  const [searchTerm, setSearchTerm] = useState('')
 
   const handlePress = (route: availableRoutes) => {
     router.push(`/${route}`)
   }
+
+  const filteredNotes = notes.filter(note =>
+    note.title.toLowerCase().includes(searchTerm.toLowerCase())
+  )
 
   return (
     <SafeAreaView className='flex-1'>
@@ -30,8 +37,16 @@ export default function TabOneScreen() {
 
         <View className='flex flex-row items-center bg-slate-200 border border-slate-400 py-3 px-6 rounded-full gap-2 mt-8'>
           <Ionicons name='search' size={24} color='black' />
-          <TextInput className='flex-1' placeholder='Search' />
-          <Pressable className='border rounded-full border-slate-400 p-0.5'>
+          <TextInput
+            className='flex-1'
+            placeholder='Search'
+            value={searchTerm}
+            onChangeText={setSearchTerm}
+          />
+          <Pressable
+            className='border rounded-full border-slate-400 p-0.5'
+            onPress={() => setSearchTerm('')}
+          >
             <MaterialIcons name='clear' size={18} color='gray' />
           </Pressable>
         </View>
@@ -41,7 +56,7 @@ export default function TabOneScreen() {
         <View className='mt-8'>
           <View className='flex flex-row items-center  w-full justify-between px-2 mb-4'>
             <Text className='text-lg font-JakartaSemiBold text-gray-800'>
-              Notes
+              Notes highlight
             </Text>
 
             <Pressable onPress={() => handlePress('notes')}>
@@ -51,23 +66,29 @@ export default function TabOneScreen() {
             </Pressable>
           </View>
 
-          <ScrollView className='h-[370px]'>
-            {dummyNotes.map((note, index) => (
-              <View
-                key={index}
-                className='border bg-[#8B501F] border-primary/50 rounded-lg p-4 mb-4 shadow-sm'
-              >
-                <Text className='text-lg font-semibold mb-2'>{note.title}</Text>
-                <Text className='text-gray-600 mb-3'>{note.summary}</Text>
-                <View className='flex-row justify-between items-center'>
-                  <Text className='text-xs text-gray-400'>{note.date}</Text>
-                  <TouchableOpacity className='flex-row items-center'>
-                    <MaterialIcons name='share' size={20} color='#4A90E2' />
-                    <Text className='text-blue-500 ml-1'>Share</Text>
-                  </TouchableOpacity>
+          <ScrollView className='h-[550px]'>
+                                                                                                                                                                                                                                                                                                                                                                                                              {filteredNotes.length > 0 ? (
+              filteredNotes.map((note) => (
+                <View
+                  key={note.id}
+                  className='border bg-[#8B501F] border-primary/50 rounded-lg p-4 mb-4 shadow-sm'
+                >
+                  <Text className='text-lg font-semibold mb-2'>{note.title}</Text>
+                  <Text className='text-gray-600 mb-3'>{note.summary}</Text>
+                  <View className='flex-row justify-between items-center'>
+                    <Text className='text-xs text-gray-400'>{note.date}</Text>
+                    <TouchableOpacity className='hidden flex-row items-center'>
+                      <MaterialIcons name='share' size={20} color='#4A90E2' />
+                      <Text className='text-blue-500 ml-1'>Share</Text>
+                    </TouchableOpacity>
+                  </View>
                 </View>
+              ))
+            ) : (
+              <View className='flex items-center justify-center h-full'>
+                <Text className='text-gray-500'>No notes found</Text>
               </View>
-            ))}
+            )}
           </ScrollView>
         </View>
 
@@ -76,6 +97,7 @@ export default function TabOneScreen() {
     </SafeAreaView>
   )
 }
+
 const categories = [
   { id: '1', name: 'Physics', image: 'https://img.icons8.com/clouds/100/physics.png' },
   { id: '2', name: 'Calclus', image: 'https://img.icons8.com/pulsar-gradient/100/cosine.png' },
@@ -101,7 +123,7 @@ const CategoryList = () => {
   )
 
   return (
-    <View className='mt-8'>
+    <View className='mt-8 hidden'>
       <View className='flex flex-row items-center  w-full justify-between px-2 mb-4'>
         <Text className='text-lg font-JakartaSemiBold text-gray-800'>
           Categories

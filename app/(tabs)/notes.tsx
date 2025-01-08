@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { dummyNotes } from '@/constants/data'
 import { MaterialIcons } from '@expo/vector-icons'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Navigation, { TopNav } from '@/components/layout/navigation'
@@ -14,6 +13,7 @@ import {
 } from 'react-native'
 import { generateRandomId } from '@/lib/utils'
 import dayjs from 'dayjs'
+import { useAppStore } from '@/store/store'
 
 type NoteType = {
   title: string
@@ -23,7 +23,7 @@ type NoteType = {
 }
 
 export default function NotesScreen() {
-  const [notes, setNotes] = useState<NoteType[]>([])
+  const { notes, addNote, updateNote, deleteNote } = useAppStore()
   const [modalVisible, setModalVisible] = useState(false)
   const [viewModalVisible, setViewModalVisible] = useState(false)
   const [editMode, setEditMode] = useState(false)
@@ -37,10 +37,10 @@ export default function NotesScreen() {
 
   const handleAddNote = () => {
     if (editMode) {
-      setNotes(notes.map(note => note.id === newNote.id ? newNote : note))
+      updateNote(newNote)
       setEditMode(false)
     } else {
-      setNotes([...notes, newNote])
+      addNote(newNote)
     }
     setModalVisible(false)
     setNewNote({ title: '', summary: '', date: dayjs().format('MMMM D, YYYY'), id: generateRandomId() })
@@ -53,7 +53,7 @@ export default function NotesScreen() {
   }
 
   const handleDeleteNote = (id: string) => {
-    setNotes(notes.filter(note => note.id !== id))
+    deleteNote(id)
   }
 
   const handleViewNote = (note: NoteType) => {
@@ -114,7 +114,7 @@ export default function NotesScreen() {
               onChangeText={(text) => setNewNote({ ...newNote, summary: text })}
               className='border rounded h-[100px] border-gray-300 mb-4 p-2'
             />
-            <View className='flex flex-row justify-center gap-2 items-center'>
+            <View className='flex gap-2'>
               <Button title={editMode ? 'Save Changes' : 'Add Note'} onPress={handleAddNote} />
               <Button title='Cancel' onPress={() => setModalVisible(false)} />
             </View>
